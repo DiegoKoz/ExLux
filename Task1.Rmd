@@ -1,0 +1,248 @@
+---
+title: "Task 1"
+author: Diego Kolzowski
+output: html_notebook
+---
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(tidyverse)
+library(readxl)
+library(stringdist)
+library(stringi)
+library(stringr)
+library(glue)
+```
+
+```{r}
+data <- read_excel('data/task1-Dusdal_file4_MergedData_2010_20170316_CANDIDATES.xlsx')
+```
+
+```{r}
+data
+```
+
+
+## absolute number of articles for the given year
+
+### Counting criteria
+
+_first author counting_ considers only the first author of each publication. This means that each publication is considered only once. _whole counting_ give one credit to every author of each publication. This means that each publication is consider as many times as authors has. _whole-normalized counting_ consider all authors but distributes one credit between them equally distributed. This means that all the authors are consider but each publication is considered as one credit. Finally, _complete-normalized counting_ consider all authors and distributes one credit per publication, but in an unequally distributed way.
+
+Given that the goal of the task is to count how many articles where published for Germany in 2010 for STEM, I consider that the _first author counting_ is the best criteria. The final count of the _whole-normalized counting_ and the _complete-normalized counting_ would give the same result. _whole counting_ is not useful as it would inflate the result we are interested in.
+
+
+I remove the duplicated rows by `ut`.
+```{r}
+data %>% 
+  distinct(ut,.keep_all = T) %>% 
+  nrow(.)
+```
+
+
+
+## clean and re-code the variable “organization”
+
+e.g. “Humboldt-Universität zu Berlin” = “HU” = “HU Berlin” = “Humboldt Uni”
+
+
+first, to identify all articles which have at least one author who is affiliated to a university I need to remove those rows where no organization is defined.
+```{r}
+data_clean <- data %>% filter(!is.na(organization))
+```
+
+then, I remove all numbers, punctuation marks, accents. For this, I will define a cleaning function first.
+```{r}
+
+text_cleaner <- function(x){
+  #replace numbers
+  x <-  stringr::str_replace_all(x, stringr::regex("[0-9]*"),"")
+  #replace replace punctuation
+  x <- stringr::str_replace_all(x,stringr::regex("(\\+|\\-|\\=|\\:|;|\\.|,|_|\\?|¿|\\!|¡|\\\\|\\(|\\)|\\||\\^|\\>|\\<|\\/|#|\\$|%|&|\"|\\*|\\{|\\}|`|\\[|´|\\]|@|¨|°|ª)"),"")
+  #replace repeted line breaks and carriage returns
+  x <- stringr::str_replace_all(x,'(\r\n)|(\n\r)','\n') %>%
+    stringr::str_replace_all('\n+','\n') %>%
+    stringr::str_replace_all('\r+','\r') %>%
+    stringr::str_replace_all('(\r\n)|(\n\r)','\n') %>%
+    stringr::str_replace_all('\n+','\n')
+  #to lowercase
+  x <- str_to_lower(x)
+  #remove accents
+  x <- stringi::stri_trans_general(x,"Latin-ASCII")
+  return(x)
+}
+
+data_clean <- data_clean %>% 
+  mutate(organization_clean =text_cleaner(organization) ) %>% 
+  select(organization_clean,organization, everything())
+```
+
+After this, I need to find if their organization is a university or a private institution.
+A brief inspection of the dataset shows that the keyword for universities is _'univ'_. I filter the results that contain 'univ' as part of the organization name (after cleaning)
+
+```{r}
+data_clean <- data_clean %>% 
+  filter(str_detect(organization_clean, "univ")) 
+```
+
+In order to address the problem of multiple names, I summarize the information by suborganization and city
+
+```{r}
+data_clean_summary <- data_clean %>% 
+  filter(!is.na(suborganizations)) %>%
+  group_by(suborganizations,city) %>% 
+  summarise(len_org = length(unique(organization)),
+            orgs = paste0(unique(organization_clean), collapse = '  | ')) %>% 
+  arrange(-len_org)
+
+data_clean_summary
+```
+
+
+```{r}
+(data_clean_summary %>% filter(len_org==1) %>% nrow)/(data_clean_summary %>% nrow)
+
+```
+
+For the majority of the dataset (91% of the suborganization & city pairs) have one Organization per suborganization & city. 
+
+for the rest of the dataset where the suborganization is defined, the organization's names only repeat few times and by a brief inspection, they all refer to the same institution. This means, the couple suborganization & city can be used for unifying the organization name field ^[note: for a real workflow situation a much more careful analysis should be made in order to avoid unifying different organizations]
+
+
+
+
+```{r}
+data_clean %>% 
+  filter(is.na(suborganizations)) %>%
+  group_by(suborganizations,city) %>% 
+  summarise(len_org = length(unique(organization)),
+            orgs = paste0(unique(organization_clean), collapse = '  | ')) %>% 
+  arrange(-len_org)
+```
+
+When we analyse the data with no suborganizations, we found much more repetition by city and it is not clear that they all belong to the same organization.
+
+
+### unification of the organization label
+
+The proposed workflow is the following:
+
+1. For the data with suborganization & city: count the number of times each organization name is used. When there is a tie, I will choose the shortest one
+2. Define a codebook which associates the most used name with the others.
+3. recode the names based on the codebook
+
+
+```{r}
+selected_names <- data_clean %>% 
+  # keep only data with suborganization name
+  filter(!is.na(suborganizations)) %>%
+  # count repetition 
+  group_by(suborganizations,city,organization_clean) %>% 
+  summarise(n=n()) %>% 
+  #define the most used and if it is the shortest
+  group_by(suborganizations,city) %>% 
+  mutate(organization_clean = organization_clean,
+         max_n= max(n),
+         name_length = nchar(organization_clean),
+         is_shortest = name_length == min(name_length)) %>% 
+  # final filter
+  filter(n==max_n, is_shortest) %>% 
+  #keep only usefull columns
+  select(suborganizations,city, organization_new = organization_clean)
+
+
+
+```
+
+
+```{r}
+# join the selected names with the original names by city and suborganization
+codebook <- selected_names %>% 
+ left_join(.,data_clean %>% 
+  select(suborganizations,city, organization)) %>% 
+  ungroup() %>% 
+  distinct(organization, .keep_all = T) %>% 
+  select(organization, organization_new)
+
+codebook
+```
+
+I need to add those organizations that don't appear in the codebook (i.e., don't hace suborganization)
+
+```{r}
+codebook_apendix <- data_clean %>% select(-organization_new) %>% 
+  left_join(codebook) %>% 
+  filter(is.na(organization_new)) %>% 
+  mutate(organization_new = organization_clean) %>% 
+  distinct(organization, .keep_all = T) %>% 
+  select(organization, organization_new) 
+
+codebook <- bind_rows(codebook, codebook_apendix)
+```
+
+
+The final clean is to unify the use of words
+
+- remove 'univ' and derivatives from the text and re-add it at the end (normalized way) in order to recongnize they are from universities
+- normalize the derivatives of klinikum
+- final adjustments of other variations
+
+
+```{r}
+glue::glue('before extra cleaning')
+glue::glue('organization names: {length(unique(codebook$organization))}')
+glue::glue('new names: {length(unique(codebook$organization_new))}')
+
+codebook <- codebook %>% 
+  mutate(organization_new = str_replace_all(organization_new, 'univ|universitat',''),
+         organization_new = str_trim(organization_new),
+         organization_new = str_replace_all(organization_new, '\\s+',' '),
+         organization_new = paste0(organization_new, ' univ'))
+
+
+#search derivatives of klinikum
+glue('klinikum derivatives')
+word(codebook$organization_new %>% str_extract("\\b[k|c]lin.*\\w")) %>% 
+  na.omit() %>% 
+  unique(.)
+
+codebook2 <- codebook %>% 
+   mutate(organization_new = str_replace(organization_new, "clin|klinikum|klinikums|kliniken|kliniku|klinkum ",' klin '),
+          organization_new = str_replace(organization_new, " maximilian | maximilians | maximillian | maximillians ",' maximilian '),
+          organization_new = str_replace(organization_new, "mus | music ",' music '),
+          organization_new = str_trim(organization_new),
+          organization_new = str_replace_all(organization_new, '\\s+',' '),)
+
+
+glue::glue('after extra cleaning')
+glue::glue('new names: {length(unique(codebook$organization_new))}')
+```
+
+
+The number of organizations names is reduced in 437
+
+recode the original data
+
+```{r}
+data_clean <- data_clean %>% select(-organization_new) %>% 
+  left_join(codebook)
+data_clean
+```
+
+save the results
+
+```{r}
+data_clean %>% 
+  write_delim(.,'results/task1-Dusdal_file4_MergedData_2010_20170316_CANDIDATES_results.txt')
+
+codebook %>% 
+  write_delim(.,'results/codebook_task1.txt')
+```
+
+
+
+# Final notes
+
+### Program choice
+
+I decided to use R as it allows to use powerfull libraries for Text Mining, and hence for the normalization process, and also embed the documentation in the code. 
