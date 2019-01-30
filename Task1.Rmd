@@ -1,11 +1,14 @@
 ---
 title: "Task 1"
-author: Diego Kolzowski
-output: html_notebook
+author: "Diego Kolzowski"
+output:
+  html_notebook: default
+  pdf_document:
+    keep_tex: true
 ---
 
 ```{r setup}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 library(tidyverse)
 library(readxl)
 library(stringdist)
@@ -167,7 +170,7 @@ codebook <- selected_names %>%
 codebook
 ```
 
-I need to add those organizations that don't appear in the codebook (i.e., don't hace suborganization)
+I need to add those organizations that don't appear in the codebook (i.e., don't have suborganization)
 
 ```{r}
 codebook_apendix <- data_clean %>% select(-organization_new) %>% 

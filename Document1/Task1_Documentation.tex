@@ -1,0 +1,348 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Task1: Documentation},
+            pdfauthor={Diego Kolzowski},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Task 1: Documentation}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Diego Kolzowski}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+The following document will present a brief summary of some key-points from the first-task's workflow.  
+
+
+
+\section{First objective}
+
+\textbf{absolute number of articles for the given year}
+
+\subsubsection{Counting criteria}
+
+\begin{itemize}
+	\item \emph{first author counting} considers only the first author of each
+	publication. This means that each publication is considered only once.
+	\item \emph{whole counting} give one credit to every author of each
+	publication. This means that each publication is consider as many times
+	as authors has. 
+	\item \emph{whole-normalized counting} consider all authors
+	but distributes one credit between them equally distributed. This means
+	that all the authors are consider but each publication is considered as
+	one credit.
+	\item \emph{complete-normalized counting} consider all
+	authors and distributes one credit per publication, but in an unequally
+	distributed way.
+\end{itemize}
+
+
+
+Given that the goal of the task is to count how many articles where
+published for Germany in 2010 for STEM, I consider that the \emph{first
+author counting} is the best criteria. The final count of the
+\emph{whole-normalized counting} and the \emph{complete-normalized
+counting} would give the same result. \emph{whole counting} is not
+useful as it would inflate the result we are interested in.
+
+To achieve this result I remove the duplicated rows by \texttt{ut}.
+
+\textbf{Result}
+\begin{verbatim}
+>> 74286
+\end{verbatim}
+
+\section{Second objective}
+
+
+\textbf{clean and re-code the variable ``organization''}
+
+
+
+First, to identify all articles which have at least one author who is
+affiliated to a university I need to remove those rows where no
+organization is defined.
+
+Then, I remove all numbers, punctuation marks, accents, etc. For this, I define the following cleaning function:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{text_cleaner <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}
+  \CommentTok{#replace numbers}
+\NormalTok{  x <-}\StringTok{  }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_replace_all}\NormalTok{(x, stringr}\OperatorTok{::}\KeywordTok{regex}\NormalTok{(}\StringTok{"[0-9]*"}\NormalTok{),}\StringTok{""}\NormalTok{)}
+  \CommentTok{#replace replace punctuation}
+\NormalTok{  x <-}\StringTok{ }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_replace_all}\NormalTok{(x,stringr}\OperatorTok{::}\KeywordTok{regex}\NormalTok{(}\StringTok{"(}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{+|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{-|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{=|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{:|;|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{.|,|_|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{?|¿|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{!|¡|}\CharTok{\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}}\StringTok{|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{(|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{)|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{||}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{^|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{>|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{<|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{/|#|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{$|%|&|}\CharTok{\textbackslash{}"}\StringTok{|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{*|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{\{|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{\}|`|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{[|´|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{]|@|¨|°|ª)"}\NormalTok{),}\StringTok{""}\NormalTok{)}
+  \CommentTok{#replace repeted line breaks and carriage returns}
+\NormalTok{  x <-}\StringTok{ }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_replace_all}\NormalTok{(x,}\StringTok{'(}\CharTok{\textbackslash{}r\textbackslash{}n}\StringTok{)|(}\CharTok{\textbackslash{}n\textbackslash{}r}\StringTok{)'}\NormalTok{,}\StringTok{'}\CharTok{\textbackslash{}n}\StringTok{'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{    }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_replace_all}\NormalTok{(}\StringTok{'}\CharTok{\textbackslash{}n}\StringTok{+'}\NormalTok{,}\StringTok{'}\CharTok{\textbackslash{}n}\StringTok{'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{    }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_replace_all}\NormalTok{(}\StringTok{'}\CharTok{\textbackslash{}r}\StringTok{+'}\NormalTok{,}\StringTok{'}\CharTok{\textbackslash{}r}\StringTok{'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{    }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_replace_all}\NormalTok{(}\StringTok{'(}\CharTok{\textbackslash{}r\textbackslash{}n}\StringTok{)|(}\CharTok{\textbackslash{}n\textbackslash{}r}\StringTok{)'}\NormalTok{,}\StringTok{'}\CharTok{\textbackslash{}n}\StringTok{'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{    }\NormalTok{stringr}\OperatorTok{::}\KeywordTok{str_replace_all}\NormalTok{(}\StringTok{'}\CharTok{\textbackslash{}n}\StringTok{+'}\NormalTok{,}\StringTok{'}\CharTok{\textbackslash{}n}\StringTok{'}\NormalTok{)}
+  \CommentTok{#to lowercase}
+\NormalTok{  x <-}\StringTok{ }\KeywordTok{str_to_lower}\NormalTok{(x)}
+  \CommentTok{#remove accents}
+\NormalTok{  x <-}\StringTok{ }\NormalTok{stringi}\OperatorTok{::}\KeywordTok{stri_trans_general}\NormalTok{(x,}\StringTok{"Latin-ASCII"}\NormalTok{)}
+  \KeywordTok{return}\NormalTok{(x)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+After this, I need to find if their organization is a university or a
+private institution. A brief inspection of the dataset shows that the
+keyword for universities is \emph{`univ'}. I filter the results that
+contain `univ' as part of the organization name (after cleaning)
+
+
+In order to address the problem of multiple names, I summarize the
+information by suborganization and city:
+
+
+\begin{verbatim}
+
+##    suborganizations   city     len_org orgs                                
+##    <chr>              <chr>      <int> <chr>                               
+##  1 Inst Med Virol     frankfu~      12 clin goethe univ  | goethe univ fra~
+##  2 Dept Surg          munich         9 klinikum univ munchen  | lm univ mu~
+##  3 Dept Urol          munich         8 klinikum univ muenchen  | klinikum ~
+##  4 Dept Internal Med~ regensb~       7 hosp univ regensburg  | regensburg ~
+##  5 Inst Klin Radiol   munich         7 klinikum ludwig maximilians univ mu~
+##  6 Inst Pathol        freiburg       7 univ freiburg  | univ freiburg klin~
+##  7 Inst Pathol        mainz          7 johannes gutenberg univ hosp  | joh~
+##  8 Dept Cardiovasc S~ freiburg       6 med univ clin  | univ clin freiburg~
+##  9 Dept Chem          munich         6 lmu univ munich  | ludwig maximilia~
+## 10 Dept Diagnost Rad~ freiburg       6 med phys univ hosp  | univ freiburg~
+## # ... with 23,415 more rows
+\end{verbatim}
+
+
+The majority of the dataset (91\% of the suborganization \& city
+pairs) have one Organization per suborganization \& city.
+
+For the rest of the dataset where the suborganization is defined, the
+organization's names only repeat few times and by a brief inspection,
+they all refer to the same institution. This means, the couple
+suborganization \& city can be used for unifying the organization name
+field \footnote{note: for a real workflow situation a much more careful
+  analysis should be made in order to avoid unifying different
+  organizations}
+
+
+When we analyse the data with no suborganizations, we found much more
+repetition by city and it is not clear that they all belong to the same
+organization:
+
+
+\begin{verbatim}
+##    suborganizations city     len_org orgs                                  
+##    <chr>            <chr>      <int> <chr>                                 
+##  1 <NA>             munich        41 bw univ munich  | chirurg univ klin  ~
+##  2 <NA>             hamburg       35 dvgw forsch stelle tech univ hamburg ~
+##  3 <NA>             heidelb~      35 chirurg univ klin  | heidelberg univ ~
+##  4 <NA>             berlin        25 alice salomon univ appl sci  | benjam~
+##  5 <NA>             freiburg      25 anasthesiol univ klin freiburg  | chi~
+##  6 <NA>             tubingen      23 childrens univ hosp  | orthopad univ ~
+##  7 <NA>             frankfu~      20 clin johann wolfgang goethe univ  | g~
+##  8 <NA>             leipzig       20 hno univ klin leipzig  | inst univ le~
+##  9 <NA>             ulm           20 orthopad univ klinikum rku  | univ ap~
+## 10 <NA>             essen         19 duisburg essen univ  | folkwang univ ~
+## # ... with 144 more rows
+\end{verbatim}
+
+
+\subsubsection{Unification of the organization-label}
+
+The proposed workflow is the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  For the data with suborganization \& city: count the number of times
+  each organization name is used. When there is a tie, I will choose the
+  shortest one.
+\item
+  Define a codebook which associates the most used name with the others.
+\item
+  recode the names based on the codebook.
+\end{enumerate}
+
+The \textit{codebook} looks like the following table:
+
+\begin{verbatim}
+## # A tibble: 1,328 x 2
+##    organization                         organization_new                   
+##    <chr>                                <chr>                              
+##  1 free univ berlin                     free univ berlin                   
+##  2 med univ klin freiburg               med univ klin freiburg             
+##  3 johannes gutenberg univ mainz        johannes gutenberg univ mainz      
+##  4 chirurg univ klin freiburg           univ freiburg                      
+##  5 univ freiburg                        univ freiburg                      
+##  6 univ klinikum freiburg i br          univ freiburg                      
+##  7 univ klinikum heidelberg             univ klinikum heidelberg           
+##  8 univ marburg                         univ marburg                       
+##  9 univ klin kinder & jugendmed tubing~ univ klin kinder  jugendmed tubing~
+## 10 univ klin kinder & jugendmed         univ klin kinder  jugendmed        
+## # ... with 1,318 more rows
+\end{verbatim}
+
+I need to add those organizations that don't appear in the codebook because they don't have suborganization. For this, I join the codebook with the original dataset, and filter those cases where \textit{organization\_new} is empty. I append those cases and assign the cleaned organization name as the value for \textit{organization\_new}
+
+\medskip
+
+The final cleaning is to unify the use of words:
+
+\begin{itemize}
+\tightlist
+\item
+  remove \textit{univ} and derivatives from the text and re-add it at the end
+  (normalized way) in order to recongnize they are from universities
+\item
+  normalize the derivatives of \textit{klinikum}
+\item
+  final adjustments of other variations
+\end{itemize}
+
+
+
+\begin{verbatim}
+## Original organization names: 1721
+
+## before extra cleaning:1339 new names
+
+## after extra cleaning: 1284 new names
+
+\end{verbatim}
+
+The number of organizations names is reduced in 437
+
+
+The final step is to recode the original data and save the results.
+
+\hypertarget{final-notes}{%
+\section{Final notes}\label{final-notes}}
+
+\hypertarget{program-choice}{%
+\subsubsection{Program choice}\label{program-choice}}
+
+I decided to use R as it allows to use powerfull libraries for Text
+Mining, and hence for the normalization process, and also embed the
+documentation in the code.
+
+
+\end{document}
